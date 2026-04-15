@@ -81,7 +81,7 @@ func CompressEigentree(buf []byte, key *[8]uint32, counter uint64, flags uint32)
 		var wg sync.WaitGroup
 		for i := range cvs {
 			wg.Add(1)
-			go func(i uint64) {
+			func(i uint64) {
 				defer wg.Done()
 				cvs[i] = ChainingValue(CompressBuffer((*[MaxSIMD * ChunkSize]byte)(buf[i*MaxSIMD*ChunkSize:]), MaxSIMD*ChunkSize, key, counter+(MaxSIMD*i), flags))
 			}(uint64(i))

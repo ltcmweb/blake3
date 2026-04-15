@@ -87,7 +87,7 @@ func (h *Hasher) Write(p []byte) (int, error) {
 		var wg sync.WaitGroup
 		for i, height := range trees {
 			wg.Add(1)
-			go func(i int, buf []byte, counter uint64) {
+			func(i int, buf []byte, counter uint64) {
 				defer wg.Done()
 				cvs[i] = guts.ChainingValue(guts.CompressEigentree(buf, &h.key, counter, h.flags))
 			}(i, eigenbuf.Next((1<<height)*guts.ChunkSize), counter)
@@ -274,7 +274,7 @@ func (or *OutputReader) Read(p []byte) (int, error) {
 			var wg sync.WaitGroup
 			for range par {
 				wg.Add(1)
-				go func(p []byte, n guts.Node) {
+				func(p []byte, n guts.Node) {
 					defer wg.Done()
 					for i := range per {
 						guts.CompressBlocks((*[bufsize]byte)(p[i*bufsize:]), n)
